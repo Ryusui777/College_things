@@ -10,7 +10,7 @@ def cool_square(message):
         suma += 1
     print(suma)
     if suma > 1:
-        for i in range(suma):
+        for i in range(30):
             comas += ","
             apostrofes += "'"
 
