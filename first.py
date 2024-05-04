@@ -1,2 +1,3 @@
 hello = 'hello'
-print(hello)
+print(hello, ' wasup')
+print('hasdfad')
