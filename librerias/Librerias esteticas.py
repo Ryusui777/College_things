@@ -1,35 +1,41 @@
 def cool_square(message):
     suma = 0
-    num_de_lineas = 1
     lineas = []
     comas =""
     apostrofes =""
     new_string = ""
-    num_de_char = 30
+    num_de_char = 31
+    longitud = 31
+    esp = ""
     for i in message:
         suma += 1
     print(suma)
+
+
     if suma > 1:
-        for i in range(30):
+        for char in range(suma):
+            if char == num_de_char:
+                print('ASDF')
+                rango = num_de_char-31
+
+                for i in range(rango,num_de_char):
+                    new_string += message[i]
+                num_de_char += 31
+                lineas.append(new_string)
+                new_string = ""
+            elif len(message) < num_de_char:
+
+                num_de_char = len(message)
+                rango += 31
+                for y in range(rango, len(message)):
+                    new_string += f"{message[y]}"
+                lineas.append(new_string)
+                new_string = ""
+        for i in range(longitud):
             comas += ","
             apostrofes += "'"
-
-    comas += ",,"
-    apostrofes += "''"
-    for char in range(suma):
-        if char == num_de_char:
-
-            num_de_lineas += 1
-            rango = num_de_char-30
-
-            for i in range(rango,num_de_char):
-                print(i)
-                new_string += f"{message[i]}"
-            num_de_char += 30
-            print(new_string, 's')
-            lineas.append(new_string)
-            new_string = ""
-
+        comas += ",,"
+        apostrofes += "''"
 
 
 
@@ -40,12 +46,16 @@ def cool_square(message):
 
     print(coma)
     for linea in lineas:
-        mes = f"| {linea} |"
+        if len(linea) < longitud:
+            lon = longitud - len(linea)
+            for i in range(lon):
+                esp+=" "
+        mes = f"| {linea}{esp} |"
 
         print(mes)
     print(apostrofe)
-    print(lineas)
 
-hello = "hello my life, hello new world, hello, hello, hello everyonee"
+
+hello = "Hello, my life, hello, new world Hello, hello, hello, everyone Hello, hello 叫んで oh-oh, it's alright だってもしかしたら明日空が割れて堕ちてくるね? どんな瞬間も永遠にしたい 鳴り止まないでこの心 羽ばたき舞え With you"
 
 cool_square(hello)
