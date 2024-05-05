@@ -8,11 +8,12 @@ def cool_square(message):
     longitud = 31
     esp = ""
     if len(message) < longitud:
+
         longitud = len(message)
 
     for i in message:
         total_de_char += 1
-    if total_de_char > 1:
+    if total_de_char >= 1:
         for char in range(total_de_char):
 
             if char == num_de_char:
@@ -79,3 +80,4 @@ def cool_square(message):
     print(apostrofe)
 
 cool_square("We passed upon the stair We spoke of was and when Although I wasn't there He said I was his friend Which came as a surprise I spoke into his eyes I thought you died alone A long long time ago Oh no, not me We never lost control You're face to face With the man who sold the world I laughed and shook hand And made my way back home I searched for form and land For years and years I roamed I gazed a gazeless stare We walked a million hills I must have died alone A long, long time ago Who knows? Not me I never lost control You're face to face With the man who sold the world Who knows? Not me We never lost control You're face to face With the man who sold the world Thanks, that was a David Bowie song What's next? I didn't screw it up, did I? Okay, but here's another one I could screw up What is it? Am I gonna do this by myself? Yeah, he should do it by himself Do it by yourself Okay, well I think I'll try it in a different key, I'll try it in a normal key Yeah If it sounds bad, these people are just gonna have to wait Do you have a smoke? Okay")
+cool_square('12354')
