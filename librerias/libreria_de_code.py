@@ -65,3 +65,5 @@ def cool_square(message):
     print(coma)
     print(mes)
     print(apostrofe)
+hello = "hello my life, hello new world, hello, hello, hello everyonee"
+cool_square(hello)

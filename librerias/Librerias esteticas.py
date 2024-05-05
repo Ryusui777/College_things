@@ -9,41 +9,57 @@ def cool_square(message):
     esp = ""
     for i in message:
         suma += 1
-    print(suma)
+
 
 
     if suma > 1:
         for char in range(suma):
+
             if char == num_de_char:
-                print('ASDF')
-                rango = num_de_char-31
+
+                rango = num_de_char - 31
 
                 for i in range(rango,num_de_char):
                     new_string += message[i]
-                new_string_2 = new_string
+                for y in range(len(new_string)):
+                    if message[num_de_char-1] != ' ' and message[num_de_char] != ' ':
+                        new_string += message[num_de_char]
+                        if len(new_string)  > longitud:
+                            longitud += 1
+                        num_de_char += 1
 
+
+                new_string_2 = new_string
                 if new_string[0] == ' ':
                     new_string_2 = ''
                     for i in range(1,len(new_string)):
                         new_string_2 += new_string[i]
+
                 new_string = new_string_2
+                print('j',num_de_char)
                 num_de_char += 31
+                
                 lineas.append(new_string)
-                print(new_string)
+
                 new_string = ""
             elif len(message) < num_de_char:
                 new_string_2 = new_string
+                rango = num_de_char-31
+
                 num_de_char = len(message)
-                rango += 31
+
+
                 for y in range(rango, len(message)):
                     new_string += f"{message[y]}"
-                if new_string[0] == ' ':
-                    new_string_2 = ''
-                    for i in range(1,len(new_string)):
-                        new_string_2 += new_string[i]
-                    new_string = new_string_2
+                if len(new_string) > 0:
+                    if new_string[0] == ' ':
+                        new_string_2 = ''
+                        for i in range(1,len(new_string)):
+                            new_string_2 += new_string[i]
+                        new_string = new_string_2
                 lineas.append(new_string)
-                new_string = ""
+
+
         for i in range(longitud):
             comas += ","
             apostrofes += "'"
