@@ -201,5 +201,3 @@ def test(instruction_file, memory):
 
 
 
-RAM = {'e0':'01','e1':'01'}
-test('demofile.txt', RAM )
