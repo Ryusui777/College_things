@@ -91,6 +91,7 @@ def test(instruction_file, memory):
         memory[f'{hex_combinations[iterador]}'] = inserting_val
 
         memory_location.append(hex_combinations[iterador])
+
         iterador += 2
     f.close()
 #################################################################
@@ -122,22 +123,21 @@ def test(instruction_file, memory):
         registros[f'{instruccion[4]}'] = registros[f'{instruccion[5]}']
         registros[f'{instruccion[5]}'] = ''
 
+
+
     def sume(instruccion):
         a = registros[f'{instruccion[4]}']
         b = registros[f'{instruccion[5]}']
         if a == '' or b == '':
             print('Invalid number to add')
         else:
-            sum = hex(int(a, 16) + int(b, 16))
-            sum_app = ''
-            for i in range(2, len(sum)):
-                sum_app += sum[i]
-            if len(sum_app) == 2:
+            # Convert hex strings to integers, add them, and then convert back to hex
+            sum_decimal = int(a, 16) + int(b, 16)
+            sum_hex = hex(sum_decimal)
+            # Store the result in the destination register
+            registros[f'{instruccion[3]}'] = str(sum_hex[2:].zfill(2))  # Convert back to hex and pad with zeros if necessary
 
-                registros[f'{instruccion[3]}'] = sum_app
-            else:
-                print("OVERFLOW")
-#######################################################################
+    #######################################################################
     #etapa de decodificacion
     start = 0
     stop = False
@@ -167,8 +167,8 @@ def test(instruction_file, memory):
                     espacio = ''
                     espacio += instruccion[4]
                     espacio += instruccion[5]
-                    start = memory_location.index(espacio)
 
+                    start = memory_location.index(espacio)
                     starting = start
 
                     break
@@ -188,16 +188,18 @@ def test(instruction_file, memory):
 
         iterador += 1
     fit_in_square(registers, 15)
-    print(registers)
+
 ################################################################################
     memory_positions = ''
     iterador = 0
     for prt in memory:
         if memory[prt] != '':
-            memory_positions += f'Memory Position #{hex_combinations[iterador]} : {memory[prt]} '
+            memory_positions += f'Memory Position | {hex_combinations[iterador]} | {memory[prt]} '
         iterador += 1
-    print(memory_positions)
-    fit_in_square(memory_positions, 24)
+
+    fit_in_square(memory_positions, 25)
 
 
 
+RAM = {'e0':'01','e1':'01'}
+test('demofile.txt', RAM )
