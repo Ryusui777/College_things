@@ -13,61 +13,6 @@
 ### that's all (I think)###
 
 def test(instruction_file, memory):
-    #astethic purpose function
-    def fit_in_square(message, length_of_line):
-        num_of_char = 0
-        length_of_line_2 = length_of_line
-        lineas = []
-        for i in message:
-            num_of_char += 1
-        if num_of_char > 0:
-            new_length = length_of_line
-
-            for char in range(len(message)):
-                line_to_append = ""
-                if char == new_length:
-                    first = False
-                    if message[new_length - length_of_line] == " ":
-                        first = True
-                    for digit in range(new_length - length_of_line, new_length):
-                        if not first:
-                            line_to_append += message[digit]
-                        first = False
-                    for last_digit in range(len(message)):
-                        if message[(new_length - 1)] != " " and message[new_length] != " ":
-                            line_to_append += message[new_length]
-                            if len(line_to_append) > length_of_line_2:
-                                length_of_line_2 += 1
-                            new_length += 1
-
-                    new_length += length_of_line
-                    lineas.append(line_to_append)
-                elif len(message) < new_length:
-                    new_length = len(message)
-                    first = False
-                    if message[char] == " ":
-                        first = True
-                    for digit in range(char, new_length):
-                        if not first:
-                            line_to_append += message[digit]
-                        first = False
-                    lineas.append(line_to_append)
-                    new_length = char
-
-        comas = ""
-        apostrofes = ""
-        for i in range(length_of_line_2 + 2):
-            comas += ","
-            apostrofes += "'"
-        print(f".{comas}.")
-        for mes in lineas:
-            esp = ""
-            if len(mes) < length_of_line_2:
-                for i in range(length_of_line_2 - len(mes)):
-                    esp += " "
-            print(f"| {mes}{esp} |")
-        print(f"º{apostrofes}º")
-
     #inizializing memory locations
     hex_combinations = [format(i, '02x') for i in range(256)]
     memory_dup = memory
@@ -122,21 +67,37 @@ def test(instruction_file, memory):
     def move(instruccion):
         registros[f'{instruccion[4]}'] = registros[f'{instruccion[5]}']
         registros[f'{instruccion[5]}'] = ''
-
-
-
-    def sume(instruccion):
+    def sum_com(instruccion):
         a = registros[f'{instruccion[4]}']
         b = registros[f'{instruccion[5]}']
-        if a == '' or b == '':
-            print('Invalid number to add')
-        else:
-            # Convert hex strings to integers, add them, and then convert back to hex
-            sum_decimal = int(a, 16) + int(b, 16)
-            sum_hex = hex(sum_decimal)
-            # Store the result in the destination register
-            registros[f'{instruccion[3]}'] = str(sum_hex[2:].zfill(2))  # Convert back to hex and pad with zeros if necessary
-
+        a = int(a, 16)
+        b = int(b, 16)
+        num_bits = 16  # Specify the number of bits you want
+        a = format(a, f'0{num_bits}b')
+        b = format(b, f'0{num_bits}b')
+        iterador = 15
+        c = 0
+        char = ''
+        for i in a[::-1]:
+            sum = int(i) + int(b[iterador]) + int(c)
+            if sum == 0:
+                char += '0'
+            if sum == 1:
+                char += '1'
+                c = 0
+            if sum == 2:
+                char += '0'
+                c = 1
+            if sum == 3:
+                char += '1'
+                c = 1
+            iterador -= 1
+            char_2 = ''
+        for reversing in char[::-1]:
+            char_2 += reversing
+        char_2 = int(char_2, 2)
+        char_2 = format(char_2, '02x')
+        registros[f'{instruccion[3]}'] = char_2
     #######################################################################
     #etapa de decodificacion
     start = 0
@@ -153,7 +114,7 @@ def test(instruction_file, memory):
             if instruccion[2] == "4":
                 move(instruccion)
             if instruccion[2] == "5":
-                sume(instruccion)
+                sum_com(instruccion)
             if instruccion[2] == "6":
                 print("Not available yet")
             if instruccion[2] == "7":
@@ -180,24 +141,38 @@ def test(instruction_file, memory):
                 break
 ################################################################################
     #printing registers
-    registers = ''
-    iterador = 0
-    for prt in registros:
-        if registros[prt] != '':
-            registers += f"Registro {hex_numbers[iterador]}: {registros[prt]} "
 
+    iterador = 0
+    print('.,,,,,,,,,,,,,,,,,,,.')
+    for prt in registros:
+        registers = ''
+        if registros[prt] != '':
+            registers += f"| Registro | {hex_numbers[iterador]} | {registros[prt]} |"
+            print(registers)
         iterador += 1
-    fit_in_square(registers, 15)
+    print("º'''''''''''''''''''º")
 
 ################################################################################
-    memory_positions = ''
+    #printing memory
     iterador = 0
+    print('.,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,.')
     for prt in memory:
+        memory_position = ''
         if memory[prt] != '':
-            memory_positions += f'Memory Position | {hex_combinations[iterador]} | {memory[prt]} '
-        iterador += 1
+            if len(memory[prt]) == 6:
+                memory_position += f'| Memory Position | {hex_combinations[iterador]} | {memory[prt]} |'
 
-    fit_in_square(memory_positions, 25)
+            else:
+                esp = ''
+                for i in range(6-(len(memory[prt]))):
+                    esp += ' '
+                memory_position += f'| Memory Position | {hex_combinations[iterador]} | {memory[prt]} {esp}|'
+            print(memory_position)
+
+        iterador += 1
+    print("º'''''''''''''''''''''''''''''''º")
+
+
 
 
 
