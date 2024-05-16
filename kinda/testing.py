@@ -1,5 +1,73 @@
-from librerias.efficient import fit_in_square
+# 1: test works by creating a file with vole instructions and a diccionary with preestablish memory positions
+# memory diccionary can be like = {'a0': 'af'} which then will be storage in the memory position 'a0' with the value 'af'
+
+# 2: for the file it has to be a txt file, like 'instructions.txt', and has to be inputed between '' like 'instructions.txt'
+# and each instruccion has to be on a separate lines, there can't be any line blank and each one has to be an instuction
+
+# 3: Every characther after the intruction will not be compilled so that space can be use to add comments about your code like
+# 0x12fe this loads to the register......
+#    Keep In Mind   #
+#### every characther has to be lower case ###
+### at the end of the program the register that were used and the memory that was used will be printed ####
+### as a recommendation the instruction_file should be in the same directory(folder) that you're in ###
+### that's all (I think)###
+
 def test(instruction_file, memory):
+    #astethic purpose function
+    def fit_in_square(message, length_of_line):
+        num_of_char = 0
+        length_of_line_2 = length_of_line
+        lineas = []
+        for i in message:
+            num_of_char += 1
+        if num_of_char > 0:
+            new_length = length_of_line
+
+            for char in range(len(message)):
+                line_to_append = ""
+                if char == new_length:
+                    first = False
+                    if message[new_length - length_of_line] == " ":
+                        first = True
+                    for digit in range(new_length - length_of_line, new_length):
+                        if not first:
+                            line_to_append += message[digit]
+                        first = False
+                    for last_digit in range(len(message)):
+                        if message[(new_length - 1)] != " " and message[new_length] != " ":
+                            line_to_append += message[new_length]
+                            if len(line_to_append) > length_of_line_2:
+                                length_of_line_2 += 1
+                            new_length += 1
+
+                    new_length += length_of_line
+                    lineas.append(line_to_append)
+                elif len(message) < new_length:
+                    new_length = len(message)
+                    first = False
+                    if message[char] == " ":
+                        first = True
+                    for digit in range(char, new_length):
+                        if not first:
+                            line_to_append += message[digit]
+                        first = False
+                    lineas.append(line_to_append)
+                    new_length = char
+
+        comas = ""
+        apostrofes = ""
+        for i in range(length_of_line_2 + 2):
+            comas += ","
+            apostrofes += "'"
+        print(f".{comas}.")
+        for mes in lineas:
+            esp = ""
+            if len(mes) < length_of_line_2:
+                for i in range(length_of_line_2 - len(mes)):
+                    esp += " "
+            print(f"| {mes}{esp} |")
+        print(f"º{apostrofes}º")
+
     #inizializing memory locations
     hex_combinations = [format(i, '02x') for i in range(256)]
     memory_dup = memory
@@ -133,5 +201,3 @@ def test(instruction_file, memory):
 
 
 
-RAM = {'d1':'0a','d0':'0e'}
-test('demofile.txt', RAM)
