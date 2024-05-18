@@ -75,7 +75,6 @@ def test(instruction_file):
 
         a = registros[f'{instruccion[4]}']
         b = registros[f'{instruccion[5]}']
-        print(a,b)
         a = int(a, 16)
         b = int(b, 16)
         num_bits = 8  # Specify the number of bits you want
@@ -109,6 +108,9 @@ def test(instruction_file):
             print('.,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,.')
             print('| OVERFLOW | instruction |', instruccion, "|")
             print("º'''''''''''''''''''''''''''''''''º")
+    def pointer_load(instruccion):
+        memory_location = registros[f'{instruccion[5]}']
+        registros[f'{instruccion[4]}'] = memory[f'{memory_location}']
 ###############################################################################
     # Insructions decoding
     halt = False
@@ -137,36 +139,37 @@ def test(instruction_file):
                 case'c':
                     halt = True
                     break
+                case 'd':
+                    pointer_load(instruccion)
 ################################################################################
     #printing registers
     iterador = 0
-    print('.,,,,,,,,,,,,,,,,,,,.')
+    print('.,,,,,,,,,,,,,,,,,,,,,.')
     for prt in registros:
         registers = ''
         if registros[prt] != '' and iterador != 16:
-            registers += f"| Registro | {hex_numbers[iterador]} | {registros[prt]} |"
+            registers += f"| Registro | 0x{hex_numbers[iterador]} | {registros[prt]} |"
             print(registers)
 
         iterador += 1
-
-    print("º'''''''''''''''''''º")
+    print("º'''''''''''''''''''''º")
 ################################################################################
     #printing memory
     iterador = 0
-    print('.,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,.')
+    print('.,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,.')
     for prt in memory:
         memory_position = ''
         if memory[prt] != '' and iterador != 256:
             if len(memory[prt]) == 6:
-                memory_position += f'| Memory Position | {hex_combinations[iterador]} | {memory[prt]} |'
+                memory_position += f'| Memory Position | 0x{hex_combinations[iterador]} | {memory[prt]} |'
                 iterador += 1
             else:
 
-                memory_position += f'| Memory Position | {hex_combinations[iterador]} | {memory[prt]}     |'
+                memory_position += f'| Memory Position | 0x{hex_combinations[iterador]} | {memory[prt]}     |'
 
             print(memory_position)
 
         iterador += 1
-    print("º'''''''''''''''''''''''''''''''º")
+    print("º'''''''''''''''''''''''''''''''''º")
 #################################################################################
-test('demofile.txt')
+test('demofile.txt.txt')
