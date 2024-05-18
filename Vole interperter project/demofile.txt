@@ -1,0 +1,13 @@
+0x2064 00 puts the value 64 in the register 0
+0x11d0 02 loads the value stored in memory d0 to the register 1
+0x12d1 04 loads the value stored in memory d1 to the register 2
+0x5312 06 adds int 2's complement the value in registers 2 & 3 and stores it in register 3
+0xb30c 08 compares register 3 and 0 and if they are equel jumps to instruction 0c
+0xb010 0a
+0x33e0 0c stores the value in register 3 in memory location
+0xb012 0e
+0x33f0 10
+0xc000 12
+memory
+d0-0e
+d1-e0
