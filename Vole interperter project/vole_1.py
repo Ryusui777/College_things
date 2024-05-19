@@ -72,12 +72,9 @@ def test(instruction_file):
         registros[f'{instruccion[4]}'] = registros[f'{instruccion[5]}']
         registros[f'{instruccion[5]}'] = ''
     def complemento_2(instruccion):
-
-        a = registros[f'{instruccion[4]}']
-        b = registros[f'{instruccion[5]}']
-        a = int(a, 16)
-        b = int(b, 16)
-        num_bits = 8  # Specify the number of bits you want
+        a = int(registros[f'{instruccion[4]}'], 16)
+        b = int(registros[f'{instruccion[5]}'], 16)
+        num_bits = 8
         a = format(a, f'0{num_bits}b')
         b = format(b, f'0{num_bits}b')
         iterador = 7
@@ -111,6 +108,69 @@ def test(instruction_file):
     def pointer_load(instruccion):
         memory_location = registros[f'{instruccion[5]}']
         registros[f'{instruccion[4]}'] = memory[f'{memory_location}']
+    def and_comp(instruccion):
+        a = int(registros[f'{instruccion[4]}'], 16)
+        b = int(registros[f'{instruccion[5]}'], 16)
+        num_bits = 8
+        a = format(a, f'0{num_bits}b')
+        b = format(b, f'0{num_bits}b')
+        c = ''
+        for bit in range(len(a)):
+            if a[bit] == '1' and b[bit] == '1':
+                c += '1'
+            else:
+                c += '0'
+        c = int(c, 2)
+        c = format(c, '02x')
+        registros[f'{instruccion[3]}'] = c
+    def or_comp(instruccion):
+        a = int(registros[instruccion[4]], 16)
+        b = int(registros[instruccion[5]], 16)
+        num_bits = 8
+        a = format(a, f'0{num_bits}b')
+        b = format(b, f'0{num_bits}b')
+        c = ''
+        for bit in range(len(a)):
+            if a[bit] == '1' or b[bit] == '1':
+                c += '1'
+            else:
+                c+= '0'
+        c = int(c, 2)
+        c = format(c, '02x')
+        registros[f'{instruccion[3]}'] = c
+    def xor_comp(instruccion):
+        a = int(registros[instruccion[4]], 16)
+        b = int(registros[instruccion[5]], 16)
+        num_bits = 8
+        a = format(a, f'0{num_bits}b')
+        b = format(b, f'0{num_bits}b')
+        c = ''
+        for bit in range(len(a)):
+            if a[bit] == '1' and b[bit] == '0':
+                c += '1'
+            elif a[bit] == '0' and b[bit] =='1':
+                c += '1'
+            else:
+                c += '0'
+        c = int(c, 2)
+        c = format(c, '02x')
+        registros[f'{instruccion[3]}'] = c
+    def rotate(instruccion):
+        a = int(registros[f'{instruccion[3]}'], 16)
+        num_bits = 8
+        a = format(a, f'0{num_bits}b')
+        for rotations in range(int(instruccion[5])):
+            byte = []
+            byte_1 = ''
+            for bit in a:
+                byte.append(bit)
+            a = a[7]
+            for bit in range(len(byte)-1):
+                a+= byte[bit]
+        a = int(a, 2)
+        a = format(a, '02x')
+        registros[instruccion[3]] = a
+
 ###############################################################################
     # Insructions decoding
     halt = False
@@ -129,6 +189,16 @@ def test(instruction_file):
                     move(instruccion)
                 case '5':
                     complemento_2(instruccion)
+                case '6':
+                    print('In Progress')
+                case '7':
+                    or_comp(instruccion)
+                case '8':
+                    and_comp(instruccion)
+                case '9':
+                    xor_comp(instruccion)
+                case 'a':
+                    rotate(instruccion)
                 case'b':
                     if jump(instruccion):
                         espacio = ''
@@ -172,4 +242,4 @@ def test(instruction_file):
         iterador += 1
     print("º'''''''''''''''''''''''''''''''''º")
 #################################################################################
-test('demofile.txt.txt')
+test('play.txt')
