@@ -12,7 +12,7 @@
        then a - and the value to be assigned to that memory space like "a0-12"
        the value '12' will be stored in the memory position 'a0'.
 
-# 3: Every characther after the intruction or memory will not be compilled so
+# 3: Every characther one space after the intruction or memory will not be compilled so
      that space can be use to add comments about your code like:
      '0x12fe this loads to the register......'
 

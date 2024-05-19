@@ -172,7 +172,7 @@ def test(instruction_file):
         registros[instruccion[3]] = a
 
 ###############################################################################
-    # Insructions decoding
+    # Insructions decoding and executing
     halt = False
     start_pos = 0
     while not halt:
@@ -242,4 +242,4 @@ def test(instruction_file):
         iterador += 1
     print("º'''''''''''''''''''''''''''''''''º")
 #################################################################################
-test('play.txt')
+test('demofile.txt')
