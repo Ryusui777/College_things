@@ -22,5 +22,6 @@
    used will be printed
 3. As a recommendation the instruction_file should be in the same directory(folder)
    that you're in
+4. The format that is used with floating point is with a bias of -3.
 ### that's all (I think)###
-To take a look on how it works you can run it with the demofile.txt
+To take a look on how it works you can run it with the demofile.txt and see the process

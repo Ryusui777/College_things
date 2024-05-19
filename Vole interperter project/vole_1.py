@@ -94,7 +94,7 @@ def test(instruction_file):
                 char += '1'
                 c = 1
             iterador -= 1
-            char_2 = ''
+        char_2 = ''
         for reversing in char[::-1]:
             char_2 += reversing
         char_2 = int(char_2, 2)
@@ -170,7 +170,74 @@ def test(instruction_file):
         a = int(a, 2)
         a = format(a, '02x')
         registros[instruccion[3]] = a
-
+    def sum_float(instruccion):
+        a = int(registros[instruccion[4]], 16)
+        b = int(registros[instruccion[5]], 16)
+        num_bits = 8
+        a = format(a, f'0{num_bits}b')
+        b = format(b, f'0{num_bits}b')
+        # getting exponent
+        bias = -3
+        first_exponent = int(a[1:4], 2) + bias
+        secound_exponent = int(b[1:4], 2) + bias
+        # getting mantisa
+        mantisa_1 = a[4:]
+        mantisa_2 = b[4:]
+        if first_exponent > secound_exponent:
+            mantisa_2 = '0' * (first_exponent - secound_exponent) + mantisa_2
+            final_exponent = first_exponent + 3
+        elif secound_exponent > first_exponent:
+            mantisa_1 = '0' * (secound_exponent - first_exponent) + mantisa_1
+            final_exponent = secound_exponent + 3
+        else:
+            final_exponent = first_exponent +3
+        c = 0
+        char = ''
+        iterador = 3
+        # adding
+        if len(mantisa_2) < len(mantisa_1):
+            for i in mantisa_2[::-1]:
+                sum = int(i) + int(mantisa_1[iterador]) + int(c)
+                if sum == 0:
+                    char += '0'
+                    c = 0
+                if sum == 1:
+                    char += '1'
+                    c = 0
+                if sum == 2:
+                    char += '0'
+                    c = 1
+                if sum == 3:
+                    char += '1'
+                    c = 1
+                iterador -= 1
+            final = f'{b[0]}'
+        if len(mantisa_2) >= len(mantisa_1):
+            for i in mantisa_1[::-1]:
+                sum = int(i) + int(mantisa_2[iterador]) + int(c)
+                if sum == 0:
+                    char += '0'
+                if sum == 1:
+                    char += '1'
+                    c = 0
+                if sum == 2:
+                    char += '0'
+                    c = 1
+                if sum == 3:
+                    char += '1'
+                    c = 1
+                iterador -= 1
+            final = f'{a[0]}'
+        final += str(format(final_exponent, f'0{3}b'))
+        char_2 = char[::-1]
+        final += char_2[0:4]
+        if a == "00000000":
+            final = b
+        if b == '00000000':
+            final = a
+        final = int(final, 2)
+        final = format(final, '02x')
+        registros[instruccion[3]] = final
 ###############################################################################
     # Insructions decoding and executing
     halt = False
@@ -190,7 +257,7 @@ def test(instruction_file):
                 case '5':
                     complemento_2(instruccion)
                 case '6':
-                    print('In Progress')
+                    sum_float(instruccion)
                 case '7':
                     or_comp(instruccion)
                 case '8':
