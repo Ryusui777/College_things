@@ -1,8 +1,16 @@
 
 
-usr_file = 'lets_see.txt'
+
 def problem_detected(instruccion, problem_num):
     match problem_num:
+        case '12':
+            print('.,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,.')
+            print('| Error 12:                                 |')
+            print(f"|    Promblems with instruction {instruccion}      |")
+            print(f"|    '{instruccion[2]}' not a valid intruction---^         |")
+            print("|                                           |")
+            print('|                                           |')
+            print("º'''''''''''''''''''''''''''''''''''''''''''º")
         case '0':
             print('.,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,.')
             print('| Error 0:                                  |')
@@ -120,27 +128,31 @@ def problem_detected(instruccion, problem_num):
     problem = True
 def inizializer(execution_file):
     global problem
-    problem = False
     global instruction_set
-    instruction_set = []
     global memory
-    memory = {}
     global registros
     global hex_numbers
-    hex_numbers = [format(i, 'x') for i in range(16)]
+    global hex_combinations
+    global instruction_new
+    global instructions_inputed
+    global memory_inputed
+    instructions_inputed = False
+    memory_inputed = False
+    problem = False
+    instruction_set = []
+    memory = {}
+    hex_numbers = [format(i, 'X') for i in range(16)]
     registros = {}
     for num_registro in hex_numbers:
         registros[f'{num_registro}'] = ''
     main = False
     memory_inizialize = False
-    global hex_combinations
-    hex_combinations = [format(i, '02X') for i in range(256)]
 
+    hex_combinations = [format(i, '02X') for i in range(256)]
     for inizialize_space in hex_combinations:
         memory[inizialize_space] = ''
     File = open(execution_file, 'r')
     breaking = False
-    iteration = 0
     for line in File:
         #instructions
         if line[0] == '}':
@@ -149,7 +161,7 @@ def inizializer(execution_file):
             for instruction in range(len(instruction_set)):
                 memory[hex_combinations[iterador]] = instruction_set[instruction]
                 iterador += 2
-            global instruction_new
+
             instruction_new = []
             iterador = 0
             for i in range(len(instruction_set)):
@@ -158,12 +170,14 @@ def inizializer(execution_file):
         if main:
 
             if line[0:2] == '0x':
+                instructions_inputed = True
                 instruction_set.append(line[:6])
         if line[:7] == 'main(){':
             main = True
         # Memory
         if memory_inizialize and line[0:2] in hex_combinations:
             value = False
+            memory_inputed = True
             for char in range(2,len(line)):
                 if value and line[char] not in (' ', '\n'):
                     memory[line[0:2]] = line[char:char+2]
@@ -174,13 +188,13 @@ def inizializer(execution_file):
             memory_inizialize = True
         if breaking:
             break
-        iteration += 1
-inizializer(usr_file)
 ##############################
+ #instructions
 def load_mem(instruccion):
     global registros
     global memory
     global hex_combinations
+    global hex_numbers
     value = memory.get(f'{instruccion[4]}{instruccion[5]}', "NOPE")
     if value == "NOPE":
         problem_detected(instruccion, '506')
@@ -194,6 +208,7 @@ def jump(instruccion):
     global registros
     global memory
     global hex_combinations
+    global hex_numbers
     if registros.get(instruccion[3], "NOPE") == 'NOPE':
         problem_detected(instruccion, '600')
     elif f'{instruccion[4]}{instruccion[5]}' not in memory_location:
@@ -204,6 +219,7 @@ def load_bit(instruccion):
     global registros
     global memory
     global hex_combinations
+    global hex_numbers
     value = instruccion[4:]
     if value not in hex_combinations:
         problem_detected(instruccion, '101')
@@ -215,6 +231,7 @@ def store(instruccion):
     global registros
     global memory
     global hex_combinations
+    global hex_numbers
     if memory.get(f'{instruccion[4]}{instruccion[5]}', "NOPE") == 'NOPE':
         problem_detected(instruccion, '506')
     elif registros.get(instruccion[3], "NOPE") == 'NOPE':
@@ -227,6 +244,7 @@ def move(instruccion):
     global registros
     global memory
     global hex_combinations
+    global hex_numbers
     if registros.get(instruccion[4], 'NOPE') == 'NOPE':
         problem_detected(instruccion, '404')
     elif registros.get(instruccion[5], 'NOPE') == 'NOPE':
@@ -238,6 +256,7 @@ def complemento_2(instruccion):
     global registros
     global memory
     global hex_combinations
+    global hex_numbers
     if registros.get(instruccion[4], "NOPE") == 'NOPE':
         problem_detected(instruccion, '404')
     elif registros.get(instruccion[5], "NOPE") == 'NOPE':
@@ -282,6 +301,7 @@ def pointer_load(instruccion):
     global registros
     global memory
     global hex_combinations
+    global hex_numbers
     memory_location = registros.get(instruccion[5], "NOPE")
     if memory_location == 'NOPE':
         problem_detected(instruccion, '405')
@@ -299,6 +319,7 @@ def and_comp(instruccion):
     global registros
     global memory
     global hex_combinations
+    global hex_numbers
     if registros.get(instruccion[4], "NOPE") == 'NOPE':
         problem_detected(instruccion, '404')
     elif registros.get(instruccion[5], "NOPE") == 'NOPE':
@@ -328,6 +349,7 @@ def or_comp(instruccion):
     global registros
     global memory
     global hex_combinations
+    global hex_numbers
     if registros.get(instruccion[4], "NOPE") == 'NOPE':
         problem_detected(instruccion, '404')
     elif registros.get(instruccion[5], "NOPE") == 'NOPE':
@@ -357,6 +379,7 @@ def xor_comp(instruccion):
     global registros
     global memory
     global hex_combinations
+    global hex_numbers
     if registros.get(instruccion[4], "NOPE") == 'NOPE':
         problem_detected(instruccion, '404')
     elif registros.get(instruccion[5], "NOPE") == 'NOPE':
@@ -388,6 +411,7 @@ def rotate(instruccion):
     global registros
     global memory
     global hex_combinations
+    global hex_numbers
     if registros.get(instruccion[3], 'NOPE') == 'NOPE':
         problem_detected(instruccion, '406')
     else:
@@ -409,6 +433,7 @@ def sum_float(instruccion):
     global registros
     global memory
     global hex_combinations
+    global hex_numbers
     if registros.get(instruccion[4], "NOPE") == 'NOPE':
         problem_detected(instruccion, '404')
     elif registros.get(instruccion[5], "NOPE") == 'NOPE':
@@ -483,12 +508,15 @@ def sum_float(instruccion):
         final = int(final, 2)
         final = format(final, '02x')
         registros[instruccion[3]] = final
-def main_execution():
+def main_execution(usr_file):
     global memory
     global instruction_set
+    global instructions_inputed
+    global memory_inputed
+    inizializer(usr_file)
     halt = False
     start_pos = 0
-    while not halt and not problem:
+    while not halt and not problem and instructions_inputed:
         for ins_pos in range(start_pos, len(instruction_set)):
             instruccion = memory[instruction_new[ins_pos]]
             if problem:
@@ -524,34 +552,54 @@ def main_execution():
                     break
                 case 'd':
                     pointer_load(instruccion)
+                case _:
+                    problem_detected(instruccion, '12')
     finish_execution()
 def finish_execution():
+    global memory
+    global registers
+    global hex_combinations
+    global hex_numbers
+    global instructions_inputed
+    global memory_inputed
+    global problem
     if not problem:
+
         # printing registers
         iterador = 0
+        registers_empty = True
         print('.,,,,,,,,,,,,,,,,,,,,,.')
         for prt in registros:
             registers = ''
-            if registros[prt] != '' and iterador != 16:
+            if registros[prt] != '' and iterador < 16:
                 registers += f"| Registro | 0x{hex_numbers[iterador]} | {registros[prt]} |"
                 print(registers)
-
+                registers_empty = False
             iterador += 1
+        if registers_empty:
+            print('|    No Registers     |')
+
         print("º'''''''''''''''''''''º")
         ################################################################################
         # printing memory
+
         iterador = 0
+        memory_empty = True
         print('.,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,.')
         for prt in memory:
             memory_position = ''
-            if memory[prt] != '' and iterador != 256:
+            if memory[prt] != '' and iterador < 256:
+                memory_empty = False
                 if len(memory[prt]) == 6:
                     memory_position += f'| Memory Position | 0x{hex_combinations[iterador]} | {memory[prt]} |'
                     iterador += 1
                 else:
                     memory_position += f'| Memory Position | 0x{hex_combinations[iterador]} |   {memory[prt]}   |'
                 print(memory_position)
-
+        if not memory_inputed and not instructions_inputed:
+            print("|            No Memory            |")
             iterador += 1
         print("º'''''''''''''''''''''''''''''''''º")
-main_execution()
+#demo use
+usr_file = 'lets_see.txt'
+main_execution(usr_file)

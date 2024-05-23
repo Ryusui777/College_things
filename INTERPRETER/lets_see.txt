@@ -1,12 +1,10 @@
+#First inizialize the function
 main(){
 #This is a test
-0x1234
-0x2389
-0x2511
-0x8735
+0x2A43
 0xc000
+#To finish the main() function put a '}'
 }
 memory.inizialize(){
-34 = AE
-AE = 75
+
 }
